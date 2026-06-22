@@ -28,9 +28,9 @@ body {
 
 .topbar {
   align-items: end;
-  display: flex;
+  display: grid;
   gap: 18px;
-  justify-content: space-between;
+  grid-template-columns: 280px minmax(0, 1fr);
   margin: 0 auto 18px;
   max-width: 1500px;
 }
@@ -43,9 +43,15 @@ body {
   text-transform: uppercase;
 }
 
+.brand {
+  /* match the control panel's content inset (16px padding + 1px border)
+     so the title text lines up with the column below it */
+  padding-left: 17px;
+}
+
 .subtitle {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   margin: 3px 0 0;
 }
@@ -58,6 +64,7 @@ h2 {
 h1 {
   font-size: 32px;
   line-height: 1.15;
+  white-space: nowrap;
 }
 
 h2 {
@@ -262,6 +269,7 @@ canvas {
   .topbar {
     align-items: stretch;
     display: grid;
+    grid-template-columns: 1fr;
   }
 
   .layout {
