@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WiFi Lab</title>
-    <link rel="stylesheet" href="./styles.css?v=4">
+    <link rel="stylesheet" href="./styles.css?v=5">
   </head>
   <body>
     <main class="shell">
@@ -113,10 +113,9 @@
           </article>
 
           <article class="panel">
-            <div class="panel-heading">
+            <div class="panel-heading zoom-heading">
               <h2>Time Domain Zoom</h2>
-              <div class="panel-heading-controls">
-                <span id="zoom-panel-note">0 us to 40 us (800 samples)</span>
+              <div class="zoom-inputs">
                 <label class="zoom-control">
                   <span>Start time (us)</span>
                   <input id="zoom-start" type="number" min="0" step="0.1" value="0">
@@ -126,6 +125,7 @@
                   <input id="zoom-count" type="number" min="0.1" step="0.1" value="40">
                 </label>
               </div>
+              <span id="zoom-panel-note">0 us to 40 us (800 samples)</span>
             </div>
             <canvas id="zoom-canvas"></canvas>
           </article>
@@ -148,6 +148,6 @@
 
     <script>window.OFDM_VARIANT = "general";</script>
     <script src="./ofdm_general.js"></script>
-    <script src="./app.js?v=4"></script>
+    <script src="./app.js?v=5"></script>
   </body>
 </html>

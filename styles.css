@@ -211,6 +211,26 @@ button {
   justify-content: flex-end;
 }
 
+/* Time Domain Zoom heading: title left, inputs centered, result note right. */
+.zoom-heading {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.zoom-inputs {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-self: center;
+}
+
+.zoom-heading #zoom-panel-note {
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 700;
+  justify-self: end;
+}
+
 .zoom-control {
   align-items: end;
   display: grid;
