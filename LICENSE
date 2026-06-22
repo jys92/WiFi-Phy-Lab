@@ -1,0 +1,31 @@
+Copyright (c) 2026 jys92. All rights reserved.
+
+This repository and all of its contents — including the compiled
+WebAssembly module (ofdm_general.wasm), JavaScript, HTML, CSS, and any
+other files herein — are the proprietary work of the copyright holder.
+
+PERMITTED
+  - Viewing and running the site in your own web browser as hosted by
+    the author at the author's own URL.
+
+NOT PERMITTED without the prior written permission of the copyright holder
+  - Copying, redistributing, mirroring, or re-hosting any file in this
+    repository, in whole or in part.
+  - Reverse engineering, decompiling, or disassembling the WebAssembly
+    module or any other artifact.
+  - Using the contents, in whole or in part, in any other project,
+    product, or service, whether commercial or non-commercial.
+  - Creating derivative works based on the contents.
+
+The underlying source code is maintained privately and is NOT licensed
+for distribution. No license, express or implied, is granted to any
+source code by the publication of these compiled artifacts.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN
+AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+For licensing inquiries, contact: ysjeon92@gmail.com
