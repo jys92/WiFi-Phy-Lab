@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OFDM General Wideband Graph</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">OFDM General Wideband</p>
+          <h1>OFDM Time / Frequency Graph</h1>
+        </div>
+        <div class="summary">
+          <span><strong id="sample-count">0</strong> samples, <strong id="coding-mode">BCC</strong></span>
+          <span><strong id="total-symbol-count">0</strong> actual data symbols</span>
+          <span><strong id="data-symbol-count">0</strong> initial data symbols</span>
+          <span id="rms-summary">RMS: -</span>
+          <span id="phy-note">Model: -</span>
+          <span id="run-summary" class="run-summary">Run: -</span>
+        </div>
+      </header>
+
+      <section class="layout">
+        <aside class="controls">
+          <label class="field">
+            <span>PHY</span>
+            <select id="phy-select">
+              <option value="legacy" selected>802.11a legacy</option>
+              <option value="ht">802.11n HT 20/40 MHz 1SS</option>
+              <option value="vht">802.11ac VHT 20/40/80/160 MHz 1SS</option>
+              <option value="he">802.11ax HE-SU 20/40/80/160 MHz 1SS</option>
+              <option value="be">802.11be EHT-SU 20/40/80/160/320 MHz 1SS</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Bandwidth</span>
+            <select id="bw-select">
+              <option value="20" selected>20 MHz</option>
+              <option value="40">40 MHz</option>
+              <option value="80">80 MHz</option>
+              <option value="160">160 MHz</option>
+              <option value="320">320 MHz</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Rate</span>
+            <select id="rate-select">
+              <option value="6">6 Mbps</option>
+              <option value="9">9 Mbps</option>
+              <option value="12">12 Mbps</option>
+              <option value="18">18 Mbps</option>
+              <option value="24">24 Mbps</option>
+              <option value="36" selected>36 Mbps</option>
+              <option value="48">48 Mbps</option>
+              <option value="54">54 Mbps</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>MCS</span>
+            <select id="mcs-select" disabled>
+              <option value="0" selected>MCS0</option>
+              <option value="1">MCS1</option>
+              <option value="2">MCS2</option>
+              <option value="3">MCS3</option>
+              <option value="4">MCS4</option>
+              <option value="5">MCS5</option>
+              <option value="6">MCS6</option>
+              <option value="7">MCS7</option>
+              <option value="8">MCS8</option>
+              <option value="9">MCS9</option>
+              <option value="10">MCS10</option>
+              <option value="11">MCS11</option>
+              <option value="12">MCS12</option>
+              <option value="13">MCS13</option>
+            </select>
+            <output id="mcs-rate-label">6.5 Mbps</output>
+          </label>
+          <label class="field">
+            <span>Graph height</span>
+            <input id="graph-height" type="range" min="220" max="720" value="360">
+            <output id="height-label">360 px</output>
+          </label>
+          <label class="field">
+            <span>PSDU bytes</span>
+            <input id="psdu-bytes" type="number" min="1" max="4095" value="100">
+          </label>
+          <label class="field">
+            <span>PSDU fill</span>
+            <select id="psdu-fill">
+              <option value="00" selected>0x00</option>
+              <option value="ff">0xFF</option>
+            </select>
+          </label>
+          <fieldset class="field checks">
+            <legend>Time traces</legend>
+            <label><input id="show-i" type="checkbox" checked> I</label>
+            <label><input id="show-q" type="checkbox" checked> Q</label>
+            <label><input id="show-mag" type="checkbox" checked> Magnitude</label>
+          </fieldset>
+          <button id="reset-view" type="button">Reset View</button>
+        </aside>
+
+        <section class="graphs">
+          <article class="panel">
+            <div class="panel-heading">
+              <h2>Time Domain</h2>
+              <span id="time-panel-note">I/Q/Magnitude vs sample index</span>
+            </div>
+            <canvas id="time-canvas"></canvas>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <h2>Time Domain Zoom</h2>
+              <div class="panel-heading-controls">
+                <span id="zoom-panel-note">0 us to 40 us (800 samples)</span>
+                <label class="zoom-control">
+                  <span>Start time (us)</span>
+                  <input id="zoom-start" type="number" min="0" step="0.1" value="0">
+                </label>
+                <label class="zoom-control">
+                  <span>Duration (us)</span>
+                  <input id="zoom-count" type="number" min="0.1" step="0.1" value="40">
+                </label>
+              </div>
+            </div>
+            <canvas id="zoom-canvas"></canvas>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <h2>Frequency Domain</h2>
+              <span>FFT magnitude of full packet samples</span>
+            </div>
+            <canvas id="freq-canvas"></canvas>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script>window.OFDM_VARIANT = "general";</script>
+    <script src="./ofdm_general.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
