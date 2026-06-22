@@ -421,14 +421,10 @@ function drawAxes(ctx, box, xMin, xMax, yMin, yMax, xLabel, yLabel, xTickLabel =
   ctx.fillStyle = colors.ink;
   ctx.font = "13px system-ui, sans-serif";
   ctx.textAlign = "right";
-  ctx.fillText(xLabel, box.left + box.width, box.top + box.height + 56);
+  ctx.fillText(`[${xLabel}]`, box.left + box.width, box.top + box.height + 56);
+  // y-axis name: horizontal, just above the max value (top-left), bracketed.
   ctx.textAlign = "left";
-  ctx.save();
-  ctx.translate(18, box.top + 76);
-  ctx.rotate(-Math.PI / 2);
-  ctx.fillText(yLabel, 0, 0);
-  ctx.restore();
-  ctx.textAlign = "left";
+  ctx.fillText(`[${yLabel}]`, 8, box.top - 10);
 }
 
 function pathFor(ctx, points, box, xMin, xMax, yMin, yMax, getX, getY, color) {
@@ -716,7 +712,7 @@ function sampleWindowForZoom() {
 function drawTimeDomain() {
   const samples = state.samples;
   const { ctx, width, height } = setupCanvas(els.timeCanvas, state.height);
-  const box = { left: 58, top: 20, width: width - 76, height: height - 92, totalWidth: width, totalHeight: height };
+  const box = { left: 58, top: 30, width: width - 76, height: height - 102, totalWidth: width, totalHeight: height };
   const traces = [];
 
   if (els.showI.checked) traces.push({ label: "I", color: colors.i, getter: (p) => p.re });
@@ -742,7 +738,7 @@ function drawTimeDomain() {
 function drawZoomDomain() {
   const samples = state.samples;
   const { ctx, width, height } = setupCanvas(els.zoomCanvas, state.height);
-  const box = { left: 58, top: 20, width: width - 76, height: height - 92, totalWidth: width, totalHeight: height };
+  const box = { left: 58, top: 30, width: width - 76, height: height - 102, totalWidth: width, totalHeight: height };
   const traces = [];
 
   if (els.showI.checked) traces.push({ label: "I", color: colors.i, getter: (p) => p.re });
@@ -768,7 +764,7 @@ function drawZoomDomain() {
 function drawFrequencyDomain() {
   const points = state.frequency;
   const { ctx, width, height } = setupCanvas(els.freqCanvas, state.height);
-  const box = { left: 58, top: 20, width: width - 76, height: height - 92, totalWidth: width, totalHeight: height };
+  const box = { left: 58, top: 30, width: width - 76, height: height - 102, totalWidth: width, totalHeight: height };
 
   const mags = points.map((p) => p.magDb);
   const yMax = mags.length ? Math.max(...mags) + 3 : 1;
