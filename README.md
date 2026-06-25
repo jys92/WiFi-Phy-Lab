@@ -1,30 +1,34 @@
-# OFDM General Wideband Graph — Web
+# WiFi Phy Lab - Web
 
-802.11a/n/ac/ax/be OFDM 파형 생성기를 브라우저에서 **완전히 클라이언트사이드**로 실행하는
-정적 사이트입니다. C 코어를 WebAssembly로 컴파일(`ofdm_general.wasm`)해, 서버 없이
-브라우저에서 직접 `Module.callMain()`으로 파형을 생성하고 시간/주파수 도메인을 그립니다.
+A static site that runs an 802.11a/n/ac/ax/be OFDM waveform generator **fully
+client-side** in the browser. The C core is compiled to WebAssembly
+(`ofdm_general.wasm`), so waveforms are generated directly in the browser via
+`Module.callMain()` — with no server — and rendered in both the time and
+frequency domains.
 
-GitHub Pages로 그대로 서빙 가능합니다 (별도 백엔드 불필요).
+It can be served as-is from GitHub Pages (no backend required).
 
-## 파일
+## Files
 
 - `index.html` — UI
-- `app.js` — 컨트롤 처리, WASM 호출, 캔버스 렌더링
+- `app.js` — control handling, WASM invocation, canvas rendering
 - `styles.css`
-- `ofdm_general.js` / `ofdm_general.wasm` — Emscripten 빌드 산출물
+- `ofdm_general.js` / `ofdm_general.wasm` — Emscripten build artifacts
 
-## 주의
+## Note
 
-이 파일들은 **빌드 산출물**입니다. 직접 수정하지 마세요. 소스(C, 프런트엔드 원본)는
-private 저장소에서 관리되며, 변경 시 거기서 다시 빌드해 이 저장소에 반영합니다.
+These files are **build artifacts**. Do not edit them directly. The sources
+(the C code and the original front-end) are managed in a private repository;
+when they change, they are rebuilt there and the output is updated in this
+repository.
 
-## 라이선스
+## License
 
-독점(All Rights Reserved). 자세한 내용은 [LICENSE](./LICENSE) 참고. 브라우저에서 보고
-실행하는 것은 가능하지만, 복사·재배포·재호스팅·역공학·재사용은 사전 서면 허가가
-필요합니다.
+Proprietary (All Rights Reserved). See [LICENSE](./LICENSE) for details. Viewing
+and running the site in a browser is permitted, but copying, redistribution,
+re-hosting, reverse engineering, and reuse require prior written permission.
 
-## 로컬 미리보기
+## Local preview
 
 ```sh
 python3 -m http.server 8000
