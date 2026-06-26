@@ -766,9 +766,17 @@ function drawFrequencyDomain() {
   const { ctx, width, height } = setupCanvas(els.freqCanvas, state.height);
   const box = { left: 58, top: 30, width: width - 76, height: height - 102, totalWidth: width, totalHeight: height };
 
-  const mags = points.map((p) => p.magDb);
-  const yMax = mags.length ? Math.max(...mags) + 3 : 1;
-  const yMin = mags.length ? Math.min(...mags) - 3 : -80;
+  // Compute min/max with a single pass. Avoid Math.max(...mags): at large PSDU
+  // the frequency array can exceed 131072 points, which overflows the browser's
+  // argument-spread limit and throws RangeError.
+  let magMin = Infinity;
+  let magMax = -Infinity;
+  for (const p of points) {
+    if (p.magDb < magMin) magMin = p.magDb;
+    if (p.magDb > magMax) magMax = p.magDb;
+  }
+  const yMax = points.length ? magMax + 3 : 1;
+  const yMin = points.length ? magMin - 3 : -80;
   const xMin = points[0]?.bin ?? -1;
   const xMax = points[points.length - 1]?.bin ?? 1;
   const extraXTicks = [];
