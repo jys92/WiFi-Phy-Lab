@@ -1,6 +1,7 @@
 const state = {
   samples: [],
   frequency: [],
+  pilotBins: [],
   height: 360,
   totalSymbols: 0,
   dataSymbols: 0,
@@ -70,6 +71,9 @@ async function runGenerator(extra = []) {
   let stdout = "";
   let stderr = "";
   const Module = await OfdmModule({
+    // Cache-bust the .wasm in lockstep with the script tags so a rebuilt binary
+    // is never served stale from the browser cache.
+    locateFile: (path, prefix) => prefix + path + (path.endsWith(".wasm") ? "?v=9" : ""),
     print: (text) => { stdout += text + "\n"; },
     printErr: (text) => { stderr += text + "\n"; }
   });
@@ -238,6 +242,15 @@ function parseFrequency(text) {
     }
   });
   return points;
+}
+
+// Parse the "# Pilot bins : <x> <x> ..." header into an array of bin-axis
+// positions (the x coordinates used by the frequency-domain plot). Absent for
+// PHY/bandwidth combinations whose pilots are not yet emitted by the generator.
+function parsePilotBins(text) {
+  const line = text.split(/\n/).find((l) => l.startsWith("# Pilot bins :"));
+  if (!line) return [];
+  return (line.match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
 }
 
 function setupCanvas(canvas, height) {
@@ -489,7 +502,9 @@ function drawLegend(ctx, items, x, y) {
     ctx.stroke();
     ctx.fillStyle = colors.ink;
     ctx.fillText(item.label, x + offset + 30, y + 4);
-    offset += 92;
+    // Advance past the swatch (24px), gap (6px), the actual label width, and a
+    // trailing gap so variable-length labels never overlap the next item.
+    offset += 30 + ctx.measureText(item.label).width + 24;
   });
 }
 
@@ -815,14 +830,37 @@ function drawFrequencyDomain() {
   }
 
   pathFor(ctx, points, box, xMin, xMax, yMin, yMax, (p) => p.bin, (p) => p.magDb, colors.freq);
-  drawLegend(ctx, [
-    { label: "FFT magnitude", color: colors.freq }
-  ], box.left + 8, box.top + 18);
+
+  // Pilot subcarrier markers: vertical lines at the bin positions reported by
+  // the generator (already mapped to this plot's bin axis).
+  const pilots = state.pilotBins.filter((b) => b >= xMin && b <= xMax);
+  if (pilots.length) {
+    const xScale = box.width / Math.max(1, xMax - xMin);
+    ctx.save();
+    ctx.strokeStyle = colors.pilot;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 3]);
+    for (const bin of pilots) {
+      const x = box.left + (bin - xMin) * xScale;
+      ctx.beginPath();
+      ctx.moveTo(x, box.top);
+      ctx.lineTo(x, box.top + box.height);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  const legend = [{ label: "FFT magnitude", color: colors.freq }];
+  if (pilots.length) {
+    legend.push({ label: "Pilot subcarriers", color: colors.pilot });
+  }
+  drawLegend(ctx, legend, box.left + 8, box.top + 18);
 }
 
 async function loadFrequency() {
   const text = await runGenerator(["--freq-only"]);
   state.frequency = parseFrequency(text);
+  state.pilotBins = parsePilotBins(text);
   drawFrequencyDomain();
 }
 
@@ -863,6 +901,7 @@ async function loadRate(rate) {
   const text = await runGenerator(["--precise-time"]);
   state.samples = parseSamples(text);
   state.frequency = parseFrequency(text);
+  state.pilotBins = parsePilotBins(text);
   const meta = parseMetadata(text);
   state.totalSymbols = meta.totalSymbols ?? 0;
   state.dataSymbols = meta.dataSymbols ?? 0;
